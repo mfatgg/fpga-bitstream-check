@@ -1,0 +1,25 @@
+{
+ "designs": 100,
+ "proved": 100,
+ "complete_proofs": 68,
+ "counterexamples": [],
+ "errors": [],
+ "negative_controls": 100,
+ "lut_mutants": {
+  "caught": 93,
+  "equivalent": 7,
+  "unparseable": 0,
+  "MISSED": 0,
+  "no_lut": 0,
+  "no_bits": 0
+ },
+ "routing_mutants": {
+  "caught": 80,
+  "equivalent": 18,
+  "unparseable": 0,
+  "MISSED": 0,
+  "no_lut": 0,
+  "no_bits": 2
+ },
+ "note": "2026-11-08: sq0085 routing mutant re-classified after the port-list check was added to prove() (it had connected an extra input pad, which miter left floating)."
+}

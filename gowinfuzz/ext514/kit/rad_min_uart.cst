@@ -1,0 +1,13 @@
+// rad_min_uart.cst -- tangnano20k.cst + the BL616 UART link (P49).
+// FPGA pin 69 = uart_tx into the onboard BL616, which presents it as the
+// board's USB COM port at 115200 (pin map per Sipeed's official uart
+// example, TangNano-20K-example/uart/src/top.cst).
+IO_LOC "clk" 4;
+IO_LOC "led[0]" 15;
+IO_LOC "led[1]" 16;
+IO_LOC "led[2]" 17;
+IO_LOC "led[3]" 18;
+IO_LOC "led[4]" 19;
+IO_LOC "led[5]" 20;
+IO_LOC "uart_tx" 69;
+IO_PORT "uart_tx" IO_TYPE=LVCMOS33;

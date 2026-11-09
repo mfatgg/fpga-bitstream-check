@@ -1,0 +1,11 @@
+{
+ "designs_scanned": 482,
+ "designs_with_a_set_carry_bit": 177,
+ "caught": 147,
+ "caught_undriven": 9,
+ "equivalent": 21,
+ "MISSED": 0,
+ "unparseable": 0,
+ "no_carry_bit": 305,
+ "missed": []
+}

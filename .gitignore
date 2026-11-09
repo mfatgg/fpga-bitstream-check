@@ -1,0 +1,7 @@
+.venv/
+.venv-old/
+work*/
+**/b/
+*.log
+__pycache__/
+gowinfuzz/alu_apicula.v
