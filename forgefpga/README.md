@@ -7,6 +7,7 @@ The Renesas ForgeFPGA SLG47910 (1K LUTs, as on the Vicharak Shrike-lite) has no 
 | [`layout.py`](layout.py) | The layout: `lut_cells(x, y, slot, pins, offset)` gives the 64 (row, word, bit) cells of a LUT; `read_lut` reads a truth table |
 | [`memsearch.py`](memsearch.py) | Finds the memory-CLB layout from random starts by a simplicity score, then solves the slot split exactly |
 | [`memcheck.py`](memcheck.py) | Scores a layout against controls, a random null and all 142 one-step neighbours |
+| [`gridcheck.py`](gridcheck.py) | Derives the site grid and which columns are memory CLBs, from the same public files |
 | [`corpus.py`](corpus.py) | Reads the fabric of every bitstream container under the fetched sources, each distinct fabric once |
 | [`sources.tsv`](sources.tsv), [`fetch.sh`](fetch.sh) | The 9 third-party repos used, pinned to commits, with their licences. Nothing of theirs is redistributed here |
 | [`tests/`](tests/test_memlayout.py) | Layout invariants, loader, and recovery of a planted layout from synthetic LUTs |
@@ -29,7 +30,11 @@ In both kinds, the place-and-route tool chooses per LUT which physical input car
 
 ## How the memory layout is recovered
 - **Inputs:** 79 distinct fabrics from the 9 repos in `sources.tsv`: Vicharak's examples plus 8 community repos (GPL-2.0/3.0, CERN-OHL-1.2, BSD-3, MIT). The fabrics include 588 non-empty memory CLBs.
-- **Assumed structure:** only the logic-CLB one: words 0/1/9/10 and bands +0/+16/+64/+80. That gives 16 candidate cell groups of 16 rows per CLB.
+- **Assumed structure:** only the logic-CLB one: words 0/1/9/10 and bands +0/+16/+64/+80. That gives 16 candidate cell groups of 16 rows per CLB. The logic layout comes from symmetry statistics of LUT tables in these fabrics and from the one openly licensed vendor build report among them (Arnav-panjla, GPL-3.0): each of its 6 LUT6 tables is found exactly once in the whole fabric, at the predicted block.
+- **Site grid and memory columns, derived (`gridcheck.py`):** read as logic LUTs, the tables are small only at real sites.
+  - Rows y ≡ 1 (mod 3), y = 1…28: 40–54 % of tables have support ≤ 4. Every other row: 0–10 %.
+  - Even columns x = 2…28: 29–54 %. Every odd column and x = 30: 0.0–0.3 %.
+  - Columns 6, 8, 22 and 24, and only those, score higher under the memory layout than under the logic layout. Simplicity there is 1,173 vs 718, 1,203 vs 758, 965 vs 578 and 850 vs 524; elsewhere the logic layout wins by about 2:1.
 - **Unknown:** which 4 groups form each slot, and how the 4 low address bits map to the 16 rows (one GF(2) basis per band).
 - **Statistic:** with the right grouping, each truth table depends only on the inputs its LUT really uses, and small LUTs are common. A wrong grouping mixes LUTs, and the mixed table depends on nearly all 6 inputs. Score = Σ (6 − support) over all non-empty slot tables.
 - **Search:**
@@ -75,11 +80,14 @@ In both kinds, the place-and-route tool chooses per LUT which physical input car
 python3 -I -m unittest discover -s tests
 ```
 ```bash
+python3 -I gridcheck.py work
+```
+```bash
 python3 -I memcheck.py work --neighbours
 ```
 ```bash
 python3 -I memsearch.py work 20
 ```
-memcheck takes about 2.5 minutes; memsearch with 20 starts takes about 25 minutes. Both use the standard library only (Python 3.11+).
+gridcheck takes under a minute and memcheck about 2.5 minutes; memsearch with 20 starts takes about 25 minutes. Both use the standard library only (Python 3.11+).
 
 **Sources and licences:** the bitstreams are their authors' and are fetched, not copied: see `sources.tsv`. Facts about the bit layout are stated in my own words. Renesas' public datasheet and configuration guide were read for the fabric size and framing; nothing from them is reproduced.
