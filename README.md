@@ -9,6 +9,7 @@ Equivalence checks for **open FPGA flows at bitstream level**: recover the netli
 | [`gowinfuzz/`](gowinfuzz/README.md) | Gowin GW1N/GW2A (yosys → nextpnr-himbaechel → Apicula): `unpack_full.py` completes `gowin_unpack` (see YosysHQ/apicula#583–#586); `regcorr.py` does register/carry-cell correspondence for large designs |
 | [`gowinfuzz/ext514/`](gowinfuzz/ext514/README.md) | YosysHQ/apicula#514 reproducers (CC0 kit): the pre-#1736 nextpnr bug found at the exact cells; the 8-port residual proves on 10/10 seeds |
 | [`gowinfuzz/ext541/`](gowinfuzz/ext541/README.md) | YosysHQ/apicula#541 write-up (the reporter's files aren't included: get them from the issue) |
+| [`forgefpga/`](forgefpga/README.md) | Renesas ForgeFPGA SLG47910: the LUT truth-table layout of logic and memory CLBs, the memory one recovered from public bitstreams alone (no vendor tool, report or own build) |
 
 Write-ups: [fuzzing the open iCE40 flow](https://asknau.com/en/tech-blog/2026/11/07/fuzzing-the-open-ice40-flow/), [two Gowin miscompute reports explained from the bitstream](https://asknau.com/en/tech-blog/2026/11/09/checking-gowin-bitstreams/).
 
